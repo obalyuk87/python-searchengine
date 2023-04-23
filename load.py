@@ -1,12 +1,11 @@
 import gzip
 from lxml import etree
 import time
-
 from search.documents import Abstract
 
-def load_documents():
+def load_documents(file_path):
     start = time.time()
-    with gzip.open('data/enwiki-latest-abstract.xml.gz', 'rb') as f:
+    with gzip.open(file_path, 'rb') as f:
         doc_id = 0
         for _, element in etree.iterparse(f, events=('end',), tag='doc'):
             title = element.findtext('./title')

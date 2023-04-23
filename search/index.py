@@ -4,6 +4,9 @@ from .timing import timing
 from .analysis import analyze
 
 class Index:
+    index = {}
+    documents = {}
+
     def __init__(self):
         self.index = {}
         self.documents = {}
