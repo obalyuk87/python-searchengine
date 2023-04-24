@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container my-5">
+        <h1>Python Bot IR-CAP6776</h1>
+
+        <div class="card">
+            <div class="card-body">
+                <form method="GET" action="/">
+                    <table>
+                        <tr>
+                            <td>Search:</td>
+                            <td><input type="text" name="search" required="required" value="{{vars.search}}" size="40"
+                                    class="form-control" /></td>
+
+                            <td>
+                                <select name="search_type" class="form-select">
+                                    <option value="AND" {%if vars.search_type=='AND' %}selected="selected" {% endif %}>
+                                        AND
+                                    </option>
+                                    <option value="OR" {%if vars.search_type=='OR' %}selected="selected" {% endif %}>OR
+                                    </option>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="ranked" class="form-select">
+                                    <option value="yes" {%if vars.ranked=='yes' %}selected="selected" {% endif %}>Ranked
+                                    </option>
+                                    <option value="no" {%if vars.ranked=='no' %}selected="selected" {% endif %}>Not
+                                        Ranked
+                                    </option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="submit" class="btn btn-primary">
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+
+        {% if vars.query %}
+        <br>
+        <p>
+            <em>{{vars.query}}</em><br>
+            <em>Found <span class="badge bg-primary">{{vars.results_count}}</span> matching documents
+                in <span class="badge bg-primary">{{vars.search_duration}}</span> seconds
+                | Searched <span class="badge bg-secondary">{{vars.dataset_count}} documents</span>
+            </em><br>
+        </p>
+        {% endif %}
+
+
+        {% if vars.results %}
+        <hr>
+        <table class="table">
+            {%if vars.ranked=='yes' %}
+            {% for doc,score in vars.results %}
+            <tr>
+                <td style="vertical-align: top;">{{ loop.index }}</td>
+                <td>
+                    <a href="{{doc.url}}" target="wiki">{{doc.title}}</a> <span class="badge text-bg-info">Rank:
+                        {{score}}</span><br>
+                    {{doc.abstract}}<br>
+                </td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            {% for doc in vars.results %}
+            <tr>
+                <td style="vertical-align: top;">{{ loop.index }}</td>
+                <td>
+                    <a href="{{doc.url}}" target="wiki">{{doc.title}}</a><br>
+                    {{doc.abstract}}<br>
+                </td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+
+        </table>
+        {% endif %}
+
+        <br>
+        <hr>
+        <footer>
+            <em>Dataset: <a target="wiki" href="https://dumps.wikimedia.org/enwiki/latest/">{{vars.dataset_url}}</a></em>
+        </footer>
+    </div>
+
+   
+</body>
+
+</html>

@@ -1,6 +1,4 @@
 import os.path
-import requests
-
 from download import download_wikipedia_abstracts
 from load import load_documents
 from search.timing import timing
@@ -45,6 +43,9 @@ if __name__ == '__main__':
     print(f'Index contains {len(index.documents)} documents')
     results = index.search('London Beer Flood', search_type='AND')
     pprint(results)
-    # index.search('London Beer Flood', search_type='OR')
-    # index.search('London Beer Flood', search_type='AND', rank=True)
-    # index.search('London Beer Flood', search_type='OR', rank=True)
+    results = index.search('London Beer Flood', search_type='OR')
+    pprint(results)
+    results = index.search('London Beer Flood', search_type='AND', rank=True)
+    pprint(results)
+    results = index.search('London Beer Flood', search_type='OR', rank=True)
+    pprint(results)
