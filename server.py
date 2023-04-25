@@ -1,3 +1,4 @@
+#!/bin/python3
 
 import os.path
 from download import download_wikipedia_abstracts
@@ -26,14 +27,14 @@ def create_app():
     print("- creating Application")
     global index
 
-    # Download File
-    if not os.path.exists(DATA_FILE_PATH):
-        download_wikipedia_abstracts(DATA_FILE_PATH, DOWNLOAD_URL)
-        print(f'- loaded File to {DATA_FILE_PATH} from {DOWNLOAD_URL}')
-
     # Load Index
     cache_file = DATA_FILE_PATH + ".cache"
     if not os.path.exists(cache_file):
+        # Download File 
+        if not os.path.exists(DATA_FILE_PATH):
+            download_wikipedia_abstracts(DATA_FILE_PATH, DOWNLOAD_URL)
+            print(f'- loaded File to {DATA_FILE_PATH} from {DOWNLOAD_URL}')
+
         index_documents(load_documents(DATA_FILE_PATH), index)
         cache.save_index(cache_file, index)
     else:
@@ -87,7 +88,6 @@ def home():
         tplVars['search_duration'] = round((end - start) * 100, 4)
 
     return render_template('index.html', vars=tplVars)
-
 
 
 if __name__ == '__main__':
